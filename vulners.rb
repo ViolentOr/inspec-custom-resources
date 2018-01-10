@@ -20,7 +20,7 @@ class VulnersApi < Inspec.resource(1)
   def initialize(opts = {})
     @vulners_url = '/api/v3/audit/audit/'
     #TODO: Make it a param
-    @proxy = String.new
+    @proxy = nil
     @vulnerable_packages = Array.new
     @vulnerabilities = Array.new
     getVulns(getPackages)
