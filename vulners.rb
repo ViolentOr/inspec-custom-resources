@@ -9,6 +9,13 @@ require 'json'
 
 class VulnersApi < Inspec.resource(1)
   name 'vulners'
+  example "
+  describe vulners do
+    it {should_not be_vulnerable}
+    its('vulnerable_packages') {should be_in []}
+    its('vulnerabilities') {should be_in []}
+  end
+  "
 
   def initialize(opts = {})
     @vulners_url = '/api/v3/audit/audit/'
