@@ -15,12 +15,19 @@ class VulnersApi < Inspec.resource(1)
     its('vulnerable_packages') {should be_in []}
     its('vulnerabilities') {should be_in []}
   end
+
+  
+  describe vulners(proxy: 'http://username:password@host:port') do
+    it {should_not be_vulnerable}
+    its('vulnerable_packages') {should be_in []}
+    its('vulnerabilities') {should be_in []}
+  end
   "
 
   def initialize(opts = {})
     @vulners_url = '/api/v3/audit/audit/'
     #TODO: Make it a param
-    @proxy = nil
+    @proxy = opts[:proxy]
     @vulnerable_packages = Array.new
     @vulnerabilities = Array.new
     getVulns(getPackages)
