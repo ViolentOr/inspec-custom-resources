@@ -2,6 +2,20 @@
 # copyright: 2018, ViolentOr
 # author: ViolentOr
 
+example "
+describe vulners do
+  it {should_not be_vulnerable}
+  its('vulnerable_packages') {should be_in []}
+  its('vulnerabilities') {should be_in []}
+end
+
+describe vulners(proxy: 'http://username:password@host:port') do
+  it {should_not be_vulnerable}
+  its('vulnerable_packages') {should be_in []}
+  its('vulnerabilities') {should be_in []}
+end
+"
+
 require 'faraday'
 require 'json'
 
