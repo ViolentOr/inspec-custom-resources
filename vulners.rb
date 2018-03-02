@@ -9,20 +9,6 @@ require 'json'
 
 class VulnersApi < Inspec.resource(1)
   name 'vulners'
-  example "
-  describe vulners do
-    it {should_not be_vulnerable}
-    its('vulnerable_packages') {should be_in []}
-    its('vulnerabilities') {should be_in []}
-  end
-
-  
-  describe vulners(proxy: 'http://username:password@host:port') do
-    it {should_not be_vulnerable}
-    its('vulnerable_packages') {should be_in []}
-    its('vulnerabilities') {should be_in []}
-  end
-  "
 
   def initialize(opts = {})
     @vulners_url = '/api/v3/audit/audit/'
@@ -47,11 +33,11 @@ class VulnersApi < Inspec.resource(1)
   end
 
   def vulnerabilities
-    @vulnerabilities
+    @vulnerabilities.uniq
   end
 
   def vulnerable_packages
-    @vulnerable_packages
+    @vulnerable_packages.uniq
   end
 
   private
@@ -64,7 +50,7 @@ class VulnersApi < Inspec.resource(1)
 
   def getVulns(packageList)
     conn = Faraday.new(:url => 'https://vulners.com', ssl: {verify: false})
-    conn.proxy @proxy unless @proxy.nil?
+    conn.proxy=@proxy unless @proxy.nil?
     conn.headers['User-Agent'] = "inspec resource Vulners"
     
     response = conn.post do |req|
